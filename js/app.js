@@ -36,6 +36,12 @@ var Player = function() {
     this.update = function (dt) {
         this.x += 50;
     }
+    this.render = function (dt) {
+        //figure out what to put here.
+    }
+    this.handleInput = function (dt) {
+        //figure out what to put here.
+    }
 };
 
 
