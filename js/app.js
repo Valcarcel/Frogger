@@ -5,8 +5,9 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.x = 10;
-    this.y = 240;
+    this.x = (Math.random() * 500);
+    //console.log(this.x);
+    this.y = 230;
 };
 
 // Update the enemy's position, required method for game
@@ -20,16 +21,17 @@ Enemy.prototype.update = function(dt) {
 
 
 // Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+
+// RW: Only one enemy appears!? Moved for-in loop to after the allEnemies array is defined.
+
+
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 
 var Player = function() {
-    this.sprite = 'images/char-boy.png';
+    this.sprite = 'images/char-boy.png'; // the other images don't load!?
     this.x = 150;
     this.y = 350;
     this.update = function (dt) {
@@ -38,13 +40,13 @@ var Player = function() {
     this.render = function (dt) {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
-    this.handleInput = function (dt) {
+    this.handleInput = function () {
         //figure out what to put here.
     }
 };
 
 //draw the player:
-
+//  RW: I'm drawing the player in the render method.
 
 // Now instantiate your objects.
 var enemy1 = new Enemy();
@@ -53,8 +55,17 @@ var enemy3 = new Enemy();
 
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [enemy1,enemy2,enemy3];
+
+for (enemy in allEnemies) {
+    console.log(allEnemies[enemy]);
+    Enemy.prototype.render = function(dt) {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+        //console.log("allEnemies[enemy] created with x = " + this.x);
+    };
+}
 // Place the player object in a variable called player
 var player = new Player();
+
 
 
 // This listens for key presses and sends the keys to your
