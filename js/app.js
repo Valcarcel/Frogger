@@ -1,4 +1,5 @@
 // Enemies our player must avoid
+// 10/19/15 - This is a test.
 var enemyY = [60, 150, 230];
 
 var Enemy = function() {
