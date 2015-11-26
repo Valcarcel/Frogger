@@ -1,6 +1,8 @@
 // Enemies our player must avoid
-// 10/19/15 - This is a test.
+
 var enemyY = [60, 150, 230];
+var enemySpeed =  [100, 150, 200];
+var enemySpeedIndex = 1;
 
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -9,8 +11,7 @@ var Enemy = function() {
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     this.x = (Math.random() * 500);
-    //console.log(this.x);
-    this.y = enemyY[Math.floor(Math.random() * 4) ];
+    //this.y = enemyY[Math.floor(Math.random() * 4) ];
 };
 
 // Update the enemy's position, required method for game
@@ -19,10 +20,16 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x += 100*dt;
+    //this.x += 200*dt;
+    this.x += 200*dt;
     if (this.x > 500) {
         this.x = 1;
+        this.y = enemyY[Math.floor(Math.random() * 4) ]; //Pick 0, 1, or 2 for each row.
+        //enemySpeedIndex = enemySpeed[Math.floor(Math.random() * 4);
+        enemySpeedIndex = Math.floor(Math.random() * 4);
+        //console.log("New Enemy speed is " + enemySpeed[enemySpeedIndex]);
     }
+    //this.x += (enemySpeed[enemySpeedIndex])*dt;
 };
 
 
