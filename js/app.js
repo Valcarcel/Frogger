@@ -1,8 +1,9 @@
 // Enemies our player must avoid
 
 var enemyY = [60, 150, 230];
-var enemySpeed =  [100, 150, 200];
 var enemySpeedIndex = 1;
+var speed = 100;
+var enemySpeeds =  [100, 150, 200];
 
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -11,7 +12,11 @@ var Enemy = function() {
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     this.x = (Math.random() * 500);
-    //this.y = enemyY[Math.floor(Math.random() * 4) ];
+    
+    this.speed = enemySpeeds[Math.floor(Math.random() * 3) ];
+    console.log("This speed is " + this.speed);
+
+
 };
 
 // Update the enemy's position, required method for game
@@ -20,22 +25,16 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    //this.x += 200*dt;
-    this.x += 200*dt;
+    this.x += this.speed *dt;
     if (this.x > 500) {
         this.x = 1;
-        this.y = enemyY[Math.floor(Math.random() * 4) ]; //Pick 0, 1, or 2 for each row.
-        //enemySpeedIndex = enemySpeed[Math.floor(Math.random() * 4);
-        enemySpeedIndex = Math.floor(Math.random() * 4);
-        //console.log("New Enemy speed is " + enemySpeed[enemySpeedIndex]);
+        this.y = enemyY[Math.floor(Math.random() * 3) ]; 
+        this.speed= enemySpeeds[Math.floor(Math.random() * 3)];
     }
-    //this.x += (enemySpeed[enemySpeedIndex])*dt;
 };
 
 
 // Draw the enemy on the screen, required method for game
-
-// RW: Only one enemy appears!? Moved for-in loop to after the allEnemies array is defined.
 
 
 
@@ -70,7 +69,7 @@ var enemy3 = new Enemy();
 var allEnemies = [enemy1,enemy2,enemy3];
 
 for (enemy in allEnemies) {
-    console.log(allEnemies[enemy]);
+    //console.log(allEnemies[enemy]);
     Enemy.prototype.render = function(dt) {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     };
