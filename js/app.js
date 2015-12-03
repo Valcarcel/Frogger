@@ -47,14 +47,26 @@ var Player = function() {
     this.x = 150;
     this.y = 350;
     this.update = function (dt) {
-        this.x = 200;
+        //this.x = 200;
     }
     this.render = function (dt) {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
-    this.handleInput = function () {
-        //figure out what to put here.
+    this.handleInput = function (direction) {
+       if (direction=='up'){
+            this.y += -10;
+        }
+        if (direction=='down'){
+            this.y += 10;
+        }    
+        if (direction=='right'){
+            this.x += 10;
+        }
+        if (direction=='left'){
+            this.x += -10;
+        }    
     }
+    // You should call this.collision(); here. (cut from Udacity)
 };
 
 //draw the player:
