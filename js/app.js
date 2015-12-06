@@ -1,5 +1,7 @@
 // Enemies our player must avoid
 
+// Declare enemy variables:
+
 var enemyY = [60, 150, 230];
 var enemySpeedIndex = 1;
 var speed = 100;
@@ -11,12 +13,10 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.x = (Math.random() * 500);
+    //this.x = (Math.random() * 500);
+    this.x = (1);
     
     this.speed = enemySpeeds[Math.floor(Math.random() * 3) ];
-    console.log("This speed is " + this.speed);
-
-
 };
 
 // Update the enemy's position, required method for game
@@ -44,7 +44,7 @@ Enemy.prototype.update = function(dt) {
 
 var Player = function() {
     this.sprite = 'images/char-boy.png'; // the other images don't load!?
-    this.x = 150;
+    this.x = 200;
     this.y = 350;
     this.update = function (dt) {
         this.collision();
@@ -64,38 +64,39 @@ var Player = function() {
         }
         if (direction=='left'){
             this.x += -20;
-        }    
+        }   
+        if (this.y < 0) {
+            this.reset();
+        } 
+        if (this.y > 400) {
+            this.y = 400;
+        } 
     }
-    this.collision();
 };
 
-
+// Reset the players position. This method gets called if the player collides with an enemy, or reaches the water.
 
 Player.prototype.reset =function () {
-    this.x = 10;
+    this.x = 200;
     this.y = 400;
-    star.x = 400;
-    star.y = 5;
 };
 
+//Detect collision with enemies. If there is a collision, reset.
 Player.prototype.collision = function () {
-    //console.log("collision happened");
     for (var i = 0; i < allEnemies.length; i++) {
-        if (this.x < allEnemies[i].x + 50 &&
-            this.x + 50 > allEnemies[i].x &&
-            this.y < allEnemies[i].y + 50 &&
-            this.y + 50 > allEnemies[i].y) {
-            this.x = 200;
-            this.y = 400;
-
+        if (this.x < allEnemies[i].x + 70 &&
+            this.x > allEnemies[i].x &&
+            this.y < allEnemies[i].y + 80 &&
+            this.y + 70 > allEnemies[i].y) {
+            this.reset();
         }
     }
 };
 
 //draw the player:
-//  RW: I'm drawing the player in the render method.
 
 // Now instantiate your objects.
+
 var enemy1 = new Enemy();
 var enemy2 = new Enemy();
 var enemy3 = new Enemy();
@@ -104,11 +105,11 @@ var enemy3 = new Enemy();
 var allEnemies = [enemy1,enemy2,enemy3];
 
 for (enemy in allEnemies) {
-    //console.log(allEnemies[enemy]);
     Enemy.prototype.render = function(dt) {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     };
 }
+
 // Place the player object in a variable called player
 var player = new Player();
 
