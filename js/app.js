@@ -47,26 +47,49 @@ var Player = function() {
     this.x = 150;
     this.y = 350;
     this.update = function (dt) {
-        //this.x = 200;
+        this.collision();
     }
     this.render = function (dt) {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
     this.handleInput = function (direction) {
        if (direction=='up'){
-            this.y += -10;
+            this.y += -20;
         }
         if (direction=='down'){
-            this.y += 10;
+            this.y += 20;
         }    
         if (direction=='right'){
-            this.x += 10;
+            this.x += 20;
         }
         if (direction=='left'){
-            this.x += -10;
+            this.x += -20;
         }    
     }
-    // You should call this.collision(); here. (cut from Udacity)
+    this.collision();
+};
+
+
+
+Player.prototype.reset =function () {
+    this.x = 10;
+    this.y = 400;
+    star.x = 400;
+    star.y = 5;
+};
+
+Player.prototype.collision = function () {
+    //console.log("collision happened");
+    for (var i = 0; i < allEnemies.length; i++) {
+        if (this.x < allEnemies[i].x + 50 &&
+            this.x + 50 > allEnemies[i].x &&
+            this.y < allEnemies[i].y + 50 &&
+            this.y + 50 > allEnemies[i].y) {
+            this.x = 200;
+            this.y = 400;
+
+        }
+    }
 };
 
 //draw the player:
