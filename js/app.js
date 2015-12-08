@@ -3,8 +3,6 @@
 // Declare enemy variables:
 
 var enemyY = [60, 150, 230];
-var enemySpeedIndex = 1;
-var speed = 100;
 var enemySpeeds =  [100, 150, 200];
 
 var Enemy = function() {
@@ -13,10 +11,10 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    //this.x = (Math.random() * 500);
-    this.x = (1);
-    
+    this.x = 1;
     this.speed = enemySpeeds[Math.floor(Math.random() * 3) ];
+    this.enemyY = [60, 150, 230];
+    this.enemySpeeds =  [100, 150, 200];
 };
 
 // Update the enemy's position, required method for game
@@ -33,9 +31,11 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
-
 // Draw the enemy on the screen, required method for game
 
+Enemy.prototype.render = function(dt) {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
 
 
 // Now write your own player class
@@ -46,13 +46,15 @@ var Player = function() {
     this.sprite = 'images/char-boy.png'; // the other images don't load!?
     this.x = 200;
     this.y = 350;
-    this.update = function (dt) {
-        this.collision();
+};
+
+
+// Add methods to the Player.prototype:
+
+Player.prototype.render = function (dt) {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
-    this.render = function (dt) {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    }
-    this.handleInput = function (direction) {
+Player.prototype.handleInput = function (direction) {
        if (direction=='up'){
             this.y += -20;
         }
@@ -71,8 +73,23 @@ var Player = function() {
         if (this.y > 400) {
             this.y = 400;
         } 
+        if (this.x < 1 ) {
+            this.x = 1;
+        } 
+
+        if (this.x > 400 ) {
+            this.x = 400;
+        } 
     }
-};
+Player.prototype.update = function (dt) {
+        this.collision();
+        /* It was suggested that I "put the collision check in handleInput 
+        (since user input is the only way the player's state is going to change). 
+        That way, you can avoid doing computation in every frame."" However when I do this, 
+        collision detection only happends when I move the player. It doesn't happen if 
+        the player is static, and the enemy runs into the player. */
+    }
+
 
 // Reset the players position. This method gets called if the player collides with an enemy, or reaches the water.
 
@@ -82,6 +99,7 @@ Player.prototype.reset =function () {
 };
 
 //Detect collision with enemies. If there is a collision, reset.
+
 Player.prototype.collision = function () {
     for (var i = 0; i < allEnemies.length; i++) {
         if (this.x < allEnemies[i].x + 70 &&
@@ -93,8 +111,6 @@ Player.prototype.collision = function () {
     }
 };
 
-//draw the player:
-
 // Now instantiate your objects.
 
 var enemy1 = new Enemy();
@@ -103,12 +119,6 @@ var enemy3 = new Enemy();
 
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [enemy1,enemy2,enemy3];
-
-for (enemy in allEnemies) {
-    Enemy.prototype.render = function(dt) {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    };
-}
 
 // Place the player object in a variable called player
 var player = new Player();
